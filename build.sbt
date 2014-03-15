@@ -25,5 +25,3 @@ unmanagedSourceDirectories in Compile := (scalaSource in Compile).value :: Nil
 
 // Include only src/test/java in the test configuration
 unmanagedSourceDirectories in Test := (scalaSource in Test).value :: Nil
-
-atmosSettings

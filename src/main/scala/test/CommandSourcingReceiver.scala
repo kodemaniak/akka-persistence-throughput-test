@@ -12,9 +12,8 @@ class CommandSourcingReceiver extends Processor {
   private var lastPayload: Option[String] = None
   
 	def receive = {
-	  case Persistent(DomainEvent(id, payload), _) =>
+	  case Persistent(DomainEvent(id, payload), seq) =>
 	    lastPayload = Some(payload)
-	    if (recoveryFinished)
-	    	sender ! DomainEventReceived(id)
+    	sender ! DomainEventReceived(id)
 	}
 }
