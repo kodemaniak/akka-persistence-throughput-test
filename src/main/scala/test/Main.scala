@@ -30,8 +30,9 @@ object Main extends App {
   val createData: String => AnyRef = id => if (persistent) Persistent(DomainEvent(id, id)) else DomainEvent(id, id)
   
   private val receiverProps = if (!persistent) Props(classOf[NonPersistentReceiver]) else Props(classOf[CommandSourcingReceiver])
-//  private val region = system.actorOf(Props(classOf[Region], receiverProps).withDispatcher("region-dispatcher"), "region")
-  private val region = system.actorOf(Props(classOf[CommandSourcingReceiver]).withDispatcher("receiver-dispatcher"), "region")
+  private val region = system.actorOf(Props(classOf[Region], receiverProps).withDispatcher("region-dispatcher"), "region")
+// Not using a region to route requests but using a single Processor for all messages.  
+//  private val region = system.actorOf(Props(classOf[CommandSourcingReceiver]).withDispatcher("receiver-dispatcher"), "region")
   system.actorOf(Props(classOf[Sender], numIds, msgsPerId, region, createData), "sender")
   
   system.awaitTermination()
